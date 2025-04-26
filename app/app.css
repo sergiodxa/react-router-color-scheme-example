@@ -5,20 +5,24 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+/*
+ * This custom `dark:` variant will apply the variant styles to any element if
+ * the element is inside a parent with the class `dark`, or `system` and the
+ * element matches the media query for dark mode.
+ */
+@custom-variant dark {
+  &:where(.dark *, .dark) {
+    @slot;
+  }
+
+  &:where(.system *, .system) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
+
 html,
 body {
-  background-color: light-dark(var(--color-white), var(--color-gray-950));
-  color: light-dark(var(--color-gray-950), var(--color-white));
-}
-
-html.dark {
-  color-scheme: only dark;
-}
-
-html.light {
-  color-scheme: only light;
-}
-
-html.system {
-  color-scheme: light dark;
+  @apply bg-white dark:bg-gray-950;
 }
