@@ -1,87 +1,38 @@
-# Welcome to React Router!
+# React Router + Color Scheme Example
 
-A modern, production-ready template for building full-stack React applications using React Router.
+This is a simple example app using React Router and a color scheme toggle.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+The app starts using the color scheme of the user's operating system. The user can toggle between light and dark modes using a button, or go back to the system default.
 
-## Features
+To support this, we use a cookie to store the user's preference, the cookie is typed to have three possible values: `light`, `dark`, and `system`.
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+If the cookie is not set, or if the value is `system`, we use the `prefers-color-scheme` media query to determine the color scheme. If the value is `light` or `dark`, we use that value instead.
 
-## Getting Started
+To support this, we override the `dark:` variant on the Tailwind configuration to work with both `.dark` class or `.system` class + media query.
 
-### Installation
+```css
+@custom-variant dark {
+  /* This supports the .dark class */
+  &:where(.dark *, .dark) {
+    @slot;
+  }
 
-Install the dependencies:
-
-```bash
-npm install
+  /* This supports the .system class + media query */
+  &:where(.system *, .system) {
+    @media (prefers-color-scheme: dark) {
+      @slot;
+    }
+  }
+}
 ```
 
-### Development
+This approach doesn't use any JavaScript to determine the color scheme, and doesn't have a flash of uncorrect color scheme on page load because we can read the cookie value on the server side and set the initial class on the HTML element.
 
-Start the development server with HMR:
+And since for the `.system` class we use the `prefers-color-scheme` media query in CSS, the browser will automatically render the correct colors when the page loads, instead of needing to inject an inline script in the `<head>` to read the `window.matchMedia` value and set the class on the HTML element.
 
-```bash
-npm run dev
-```
+## Files to check
 
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+- [app/app.css](./app/app.css)
+- [app/color-scheme-cookie.ts](./app/color-scheme-cookie.ts)
+- [app/root.tsx](./app/root.tsx)
+- [app/routes/home.tsx](./app/routes/home.tsx)
