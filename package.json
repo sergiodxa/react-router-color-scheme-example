@@ -14,7 +14,9 @@
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.5.2"
+    "react-router": "^7.5.2",
+    "remix-utils": "^8.5.0",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.2",

@@ -7,9 +7,18 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  background-color: light-dark(var(--color-white), var(--color-gray-950));
+  color: light-dark(var(--color-gray-950), var(--color-white));
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+html.dark {
+  color-scheme: only dark;
+}
+
+html.light {
+  color-scheme: only light;
+}
+
+html.system {
+  color-scheme: light dark;
 }
