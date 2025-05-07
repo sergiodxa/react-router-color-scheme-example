@@ -17,7 +17,7 @@ export async function action({ request }: Route.ActionArgs) {
   });
 }
 
-export default function Home() {
+export default function Component() {
   return (
     <>
       <Form navigate={false} method="POST" className="p-10">
